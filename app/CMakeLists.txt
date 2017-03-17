@@ -2,6 +2,7 @@
 # library. You should either keep the default value or only pass a
 # value of 3.4.0 or lower.
 
+#要求的cmake最低版本(3.4.1)
 cmake_minimum_required(VERSION 3.4.1)
 
 # Creates and names a library, sets it as either STATIC
@@ -9,6 +10,9 @@ cmake_minimum_required(VERSION 3.4.1)
 # You can define multiple libraries, and CMake builds it for you.
 # Gradle automatically packages shared libraries with your APK.
 
+#从上到下一次为生成库名称(native-lib)、生成库类型(SHARED)、源文件路径(src/main/cpp/native-lib.cpp)
+#新建一个.cpp文件，必须在这里添加其源文件路径，多个.cpp文件放在一个add_library(...)只会生成一个库文件
+#每天加一个add_library(...),就会多一个库文件，库名称不能重复
 add_library( # Sets the name of the library.
              native-lib
 
@@ -26,6 +30,7 @@ add_library( # Sets the name of the library.
 # you want to add. CMake verifies that the library exists before
 # completing its build.
 
+#找到两个库(log-lib,log)
 find_library( # Sets the name of the path variable.
               log-lib
 
@@ -37,6 +42,8 @@ find_library( # Sets the name of the path variable.
 # can link multiple libraries, such as libraries you define in the
 # build script, prebuilt third-party libraries, or system libraries.
 
+#链接上面生成的库(native-lib,log-lib)
+#每天加一个add_library(...),这里就必须引入这个库文件
 target_link_libraries( # Specifies the target library.
                        native-lib
 

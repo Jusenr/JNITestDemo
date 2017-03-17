@@ -32,6 +32,14 @@
             android:text="Hello World!"
             android:textColor="#EE11FF"/>
 
+        <TextView
+            android:id="@+id/tv_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Hello World!"
+            android:textColor="#EE11FF"/>
+
     </LinearLayout>
 
 </RelativeLayout>

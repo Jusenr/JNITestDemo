@@ -1,66 +1,87 @@
 #include <jni.h>
 #include <string>
+#include <android/log.h>
 
+#include <iostream>
+#include <time.h>
+
+using namespace std;
 
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <android/log.h>
 #include <unistd.h>
 #include <sys/inotify.h>
-//#include <helper.h>
+
 
 #ifdef __cplusplus  //禁止编译器改函数名字
 extern "C" {
 #endif
 
-/* 宏定义begin */
-//清0宏
-#define MEM_ZERO(pDest, destSize) memset(pDest, 0, destSize)
-
-//LOG宏定义
-#define LOG_TAG "Native_Lib"
-#define LOG_DEBUG(tag, msg) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG,tag, msg)
-#define LOG_INFO(tag, msg) __android_log_print(ANDROID_LOG_INFO, LOG_TAG,tag, msg)
-#define LOG_WARN(tag, msg) __android_log_print(ANDROID_LOG_WARN, LOG_TAG,tag, msg)
-#define LOG_ERROR(tag, msg) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG,tag, msg)
-
-#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
-#define  LOGW(...)  __android_log_print(ANDROID_LOG_WARN,LOG_TAG,__VA_ARGS__)
+//LOG定义
+#define  LOG_TAG    "Native_Jni"
 #define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,LOG_TAG,__VA_ARGS__)
 #define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
+#define  LOGW(...)  __android_log_print(ANDROID_LOG_WARN,LOG_TAG,__VA_ARGS__)
+#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
 
 /* 内全局变量begin */
 //static jboolean b_IS_COPY = JNI_TRUE;
 
-jstring
-Java_com_myself_jnitestdemo_MainActivity_stringFromJNI(
+/**
+ * 返回一个字符串
+ */
+JNIEXPORT jstring JNICALL
+Java_com_myself_jnitestdemo_JniTest_stringFromJNI(
         JNIEnv *env,
         jobject thiz) {
 
-    jstring tag = env->NewStringUTF(LOG_TAG);
+    jstring tag = env->NewStringUTF("Native-Lib");
 
     std::string hello = "JNI:Hello from C++";
 
-//    LOGE("notify message is:", hello);
+    LOGD("notify message is: %d", 6);
 
     return env->NewStringUTF(hello.c_str());
 }
 
-
-/*jstring
-Java_com_myself_jnitestdemo_MainActivity_initJNI(
+/**
+ * 获取当前时间
+ */
+JNIEXPORT jstring JNICALL
+Java_com_myself_jnitestdemo_JniTest_getAcquisitionTime(
         JNIEnv *env,
-        jobject thiz) {
+        jobject instance) {
 
-    jstring tag = env->NewStringUTF(LOG_TAG);
+    struct tm *ptr;
+    time_t lt;
+    lt = time(NULL);
+    ptr = gmtime(&lt);//世界时间
+//    ptr = localtime(&lt);//当地时间
 
-    std::string hello = "JNI:Hello from JNI !";
+    char *ctime_0 = asctime(ptr);//Sat Jul 30 08:43:03 2005
+    char *ctime_1 = ctime(&lt);
 
-//    LOGE("notify message is:", hello);
+//    LOGI("asctime() Date is: ", &ctime_0);
+//    LOGW("ctime() Date is: ", &ctime_1);
 
-    return env->NewStringUTF(hello.c_str());
-}*/
+//    LOGE("ctime_r() Date is: ", " ");
+
+    return env->NewStringUTF(ctime_1);
+}
+
+/**
+ * 两个数求和
+ */
+JNIEXPORT jfloat JNICALL
+Java_com_myself_jnitestdemo_JniTest_getTwoNumbersAnd(
+        JNIEnv *env,
+        jobject instance,
+        jfloat a,
+        jfloat b) {
+
+    return a + b;
+}
 
 #ifdef __cplusplus
 }

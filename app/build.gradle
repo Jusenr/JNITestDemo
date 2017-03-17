@@ -17,8 +17,8 @@ android {
         }
         //设置NDK的模块名称及平台
         ndk {
-//            moduleName "hello-jni"
             moduleName "native-lib"
+//            moduleName "JniTest"
             abiFilters "armeabi"
         }
     }
@@ -27,9 +27,7 @@ android {
     sourceSets {
         main {
             //设置本地代码，[]内容去掉则禁止AS的NDK自动编译。
-            jni.srcDirs = ['src/main/jni']
-            //指定jniLibs的位置
-            jniLibs.srcDirs = ['src/main/libs']
+            jni.srcDirs = ['src/main/cpp']
             java.srcDirs = ['src/main/java']
             assets.srcDirs = ['src/main/assets']
         }
