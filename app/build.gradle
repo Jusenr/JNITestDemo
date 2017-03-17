@@ -15,15 +15,21 @@ android {
                 cppFlags ""
             }
         }
-//        ndk {
+        //设置NDK的模块名称及平台
+        ndk {
 //            moduleName "hello-jni"
-//        }
+            moduleName "native-lib"
+            abiFilters "armeabi"
+        }
     }
 
     //源码集
     sourceSets {
         main {
-//            jni.srcDirs = []//disable automatic ndk-build call
+            //设置本地代码，[]内容去掉则禁止AS的NDK自动编译。
+            jni.srcDirs = ['src/main/jni']
+            //指定jniLibs的位置
+            jniLibs.srcDirs = ['src/main/libs']
             java.srcDirs = ['src/main/java']
             assets.srcDirs = ['src/main/assets']
         }

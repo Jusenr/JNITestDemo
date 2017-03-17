@@ -10,7 +10,9 @@
 #include <sys/inotify.h>
 //#include <helper.h>
 
-extern "C"
+#ifdef __cplusplus  //禁止编译器改函数名字
+extern "C" {
+#endif
 
 /* 宏定义begin */
 //清0宏
@@ -59,3 +61,7 @@ Java_com_myself_jnitestdemo_MainActivity_initJNI(
 
     return env->NewStringUTF(hello.c_str());
 }*/
+
+#ifdef __cplusplus
+}
+#endif
