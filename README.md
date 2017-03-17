@@ -1,0 +1,4 @@
+# JNITestDemo
+
+JNI first
+
