@@ -13,6 +13,9 @@ using namespace std;
 #include <unistd.h>
 #include <sys/inotify.h>
 
+/**
+ * 提示：(*env).NewStringUTF(ctime_1)==env->NewStringUTF(ctime_1)
+ */
 
 #ifdef __cplusplus  //禁止编译器改函数名字
 extern "C" {
@@ -29,7 +32,9 @@ extern "C" {
 //static jboolean b_IS_COPY = JNI_TRUE;
 
 /**
- * 返回一个字符串
+ * Class:     com_myself_jnitestdemo_JniTest
+ * Method:    stringFromJNI
+ * Signature: ()S
  */
 JNIEXPORT jstring JNICALL
 Java_com_myself_jnitestdemo_JniTest_stringFromJNI(
@@ -46,7 +51,9 @@ Java_com_myself_jnitestdemo_JniTest_stringFromJNI(
 }
 
 /**
- * 获取当前时间
+ * Class:     com_myself_jnitestdemo_JniTest
+ * Method:    getAcquisitionTime
+ * Signature: ()S
  */
 JNIEXPORT jstring JNICALL
 Java_com_myself_jnitestdemo_JniTest_getAcquisitionTime(
@@ -68,10 +75,13 @@ Java_com_myself_jnitestdemo_JniTest_getAcquisitionTime(
 //    LOGE("ctime_r() Date is: ", " ");
 
     return env->NewStringUTF(ctime_1);
+//    return (*env).NewStringUTF(ctime_1);
 }
 
 /**
- * 两个数求和
+ * Class:     com_myself_jnitestdemo_JniTest
+ * Method:    getTwoNumbersAnd
+ * Signature: ()F
  */
 JNIEXPORT jfloat JNICALL
 Java_com_myself_jnitestdemo_JniTest_getTwoNumbersAnd(
@@ -82,6 +92,57 @@ Java_com_myself_jnitestdemo_JniTest_getTwoNumbersAnd(
 
     return a + b;
 }
+
+/**
+ * Class:     com_myself_jnitestdemo_JniTest
+ * Method:    getStringFromNative
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL
+Java_com_myself_jnitestdemo_JniTest_getStringFromNative
+        (JNIEnv *env,
+         jclass cls) {
+
+    return 10;
+}
+
+jobject m_object;
+jmethodID m_mid;
+jfieldID m_fid;
+
+/**
+ * Class:     com_myself_jnitestdemo_JniTest
+ * Method:    setUp
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL
+Java_com_myself_jnitestdemo_JniTest_setUp
+        (JNIEnv *env,
+         jobject thiz) {
+
+    jclass clazz = env->GetObjectClass(thiz);//获取该对象的类
+    m_object = env->NewGlobalRef(thiz);//创建对象的本地变量
+    m_mid = env->GetMethodID(clazz, "notifyFiledChange", "()V");//获取JAVA方法的ID
+    m_fid = env->GetFieldID(clazz, "a", "I");//获取java变量的ID
+    return;
+}
+
+/**
+ * Class:     com_myself_jnitestdemo_JniTest
+ * Method:    setA
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL
+Java_com_myself_jnitestdemo_JniTest_setA
+        (JNIEnv *env,
+         jobject thiz,
+         jint i) {
+
+    env->SetIntField(m_object, m_fid, i);
+    env->CallVoidMethod(m_object, m_mid);
+    return;
+}
+
 
 #ifdef __cplusplus
 }
