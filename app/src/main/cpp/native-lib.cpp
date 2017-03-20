@@ -1,7 +1,7 @@
 #include <jni.h>
 #include <string>
 #include <android/log.h>
-
+#include <stdlib.h>
 #include <iostream>
 #include <time.h>
 
@@ -9,13 +9,18 @@ using namespace std;
 
 #include <string.h>
 #include <stdio.h>
-#include <stdlib.h>
+
 #include <unistd.h>
 #include <sys/inotify.h>
 
 /**
  * 提示：(*env).NewStringUTF(ctime_1)==env->NewStringUTF(ctime_1)
  */
+//string x = "10";
+//int i = atoi(x.c_str());//string-->int、long
+//或者32位平台转换为long int
+//int ilove = strtol(x.c_str(), NULL, 10);
+//float f = atof(x.c_str());//string-->float、double
 
 #ifdef __cplusplus  //禁止编译器改函数名字
 extern "C" {
@@ -44,8 +49,11 @@ Java_com_myself_jnitestdemo_JniTest_stringFromJNI(
     jstring tag = env->NewStringUTF("Native-Lib");
 
     std::string hello = "JNI:Hello from C++";
+//    std::string hello("JNI:Hello from C++");//另一种写法
 
-    LOGD("notify message is: %d", 6);
+    const char *s = env->GetStringUTFChars(tag, 0);
+
+    LOGD("notify message is: %s", s);
 
     return env->NewStringUTF(hello.c_str());
 }
@@ -69,10 +77,8 @@ Java_com_myself_jnitestdemo_JniTest_getAcquisitionTime(
     char *ctime_0 = asctime(ptr);//Sat Jul 30 08:43:03 2005
     char *ctime_1 = ctime(&lt);
 
-//    LOGI("asctime() Date is: ", &ctime_0);
-//    LOGW("ctime() Date is: ", &ctime_1);
-
-//    LOGE("ctime_r() Date is: ", " ");
+    LOGI("asctime() Date is: %s", ctime_0);
+    LOGW("ctime() Date is: %s", ctime_1);
 
     return env->NewStringUTF(ctime_1);
 //    return (*env).NewStringUTF(ctime_1);
@@ -90,6 +96,10 @@ Java_com_myself_jnitestdemo_JniTest_getTwoNumbersAnd(
         jfloat a,
         jfloat b) {
 
+    jfloat f = a + b;
+
+    LOGW("a + b is: %f", f);
+
     return a + b;
 }
 
@@ -103,7 +113,11 @@ Java_com_myself_jnitestdemo_JniTest_getStringFromNative
         (JNIEnv *env,
          jclass cls) {
 
-    return 10;
+    int x = 10;
+
+    LOGE("number is: %d", x);
+
+    return x;
 }
 
 jobject m_object;
@@ -141,6 +155,47 @@ Java_com_myself_jnitestdemo_JniTest_setA
     env->SetIntField(m_object, m_fid, i);
     env->CallVoidMethod(m_object, m_mid);
     return;
+}
+
+/**
+ * 字符串加密(当前无法使用)
+ * Class:     com_myself_jnitestdemo_JniTest
+ * Method:    getTheCiphertext
+ * Signature: ()S
+ */
+JNIEXPORT jstring JNICALL
+Java_com_myself_jnitestdemo_JniTest_getTheCiphertext(
+        JNIEnv *env,
+        jobject instance,
+        jstring s_) {
+
+    jstring key_s = env->NewStringUTF("a1b2c3d4");
+    const char *key_s_c = env->GetStringUTFChars(key_s, 0);
+    unsigned char *key = (unsigned char *) key_s_c;
+
+    LOGI("key---> %s", key);
+
+    const char *s = env->GetStringUTFChars(s_, 0);
+    unsigned char *mingwen = (unsigned char *) s;
+
+    LOGI("mingwen---> %s", mingwen);
+
+    // TODO
+    char miwen_hex[1024];
+    char result[1024];
+    //char miwen_hex[] = "8FEEEFE524F8B68DC1FCA2899AC1A6B82E636F6D";
+
+//    AES aes(key);
+//    aes.Cipher(mingwen, miwen_hex);
+//    aes.InvCipher(miwen_hex, result);
+    getchar();
+
+    LOGI("mingwen: %s", s);
+    LOGI("miwen_hex: %s", miwen_hex);
+
+    LOGI("result: %s", s);
+
+    return env->NewStringUTF(s);
 }
 
 

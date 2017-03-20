@@ -33,6 +33,8 @@ public class JniTest {
 
     public native float getTwoNumbersAnd(float a, float b);//本地方法
 
+    public native String getTheCiphertext(String s);//本地方法
+
 
     int a;//本示例中将被修改的JAVA变量
     Handler handler;

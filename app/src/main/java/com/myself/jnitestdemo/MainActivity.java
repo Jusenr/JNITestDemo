@@ -6,6 +6,8 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String express = "葡萄科技";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
         TextView tv_int = (TextView) findViewById(R.id.tv_int);
         TextView tv_number = (TextView) findViewById(R.id.tv_number);
         TextView tv_msg = (TextView) findViewById(R.id.tv_msg);
+        TextView tv_jiami = (TextView) findViewById(R.id.tv_jiami);
 
         JniTest jniTest = new JniTest();
         sample_text.setText(jniTest.stringFromJNI());
@@ -25,7 +28,9 @@ public class MainActivity extends AppCompatActivity {
         tv_add.setText(String.valueOf(add));
         int a = jniTest.getA();
         tv_int.setText(String.valueOf("a=" + a));
-        tv_msg.setText(jniTest.getMessage().getData().toString());
         tv_number.setText(String.valueOf("number= " + jniTest.getStringFromNative()));
+        tv_msg.setText(jniTest.getMessage().getData().toString());
+        String s = jniTest.getTheCiphertext(express);
+        tv_jiami.setText(String.valueOf("密文：" + s));
     }
 }
