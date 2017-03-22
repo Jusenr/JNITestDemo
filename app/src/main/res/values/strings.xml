@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">JNITestDemo</string>
+    <string name="no_network_tips">您的网络不给力，请稍后重试</string>
+
+    <string name="title_activity_base">BaseActivity</string>
+    <string name="title_activity_appinfo">AppInfoActivity</string>
+    <string name="title_activity_fileprovidertest">FileProviderTestActivity</string>
 </resources>
