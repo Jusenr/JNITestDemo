@@ -12,7 +12,7 @@ cmake_minimum_required(VERSION 3.4.1)
 
 #从上到下一次为生成库名称(native-lib)、生成库类型(SHARED)、源文件路径(src/main/cpp/native-lib.cpp)
 #新建一个.cpp文件，必须在这里添加其源文件路径，多个.cpp文件放在一个add_library(...)只会生成一个库文件
-#每天加一个add_library(...),就会多一个库文件，库名称不能重复
+#每添加一个add_library(...),就会多一个库文件，库名称不能重复
 add_library( # Sets the name of the library.
              native-lib
 
@@ -23,6 +23,7 @@ add_library( # Sets the name of the library.
              # Associated headers in the same location as their source
              # file are automatically included.
              src/main/cpp/native-lib.cpp )
+             # src/main/jni/JniUtilsTest.cpp )
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because system libraries are included in the search path by
@@ -43,7 +44,7 @@ find_library( # Sets the name of the path variable.
 # build script, prebuilt third-party libraries, or system libraries.
 
 #链接上面生成的库(native-lib,log-lib)
-#每天加一个add_library(...),这里就必须引入这个库文件
+#每添加一个add_library(...),这里就必须引入这个库文件
 target_link_libraries( # Specifies the target library.
                        native-lib
 

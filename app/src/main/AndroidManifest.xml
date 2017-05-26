@@ -62,19 +62,15 @@
             android:glEsVersion="0x00020000"
             android:required="true"/>
 
-        <service android:name=".untitled.SDCardListenerService"/>
-
         <!-- ***************************************  ↑  *************************************** -->
 
         <activity
             android:name=".base.AppInfoActivity"
-            android:label="@string/title_activity_appinfo"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:label="@string/title_activity_appinfo"/>
 
         <activity
             android:name=".test.FileProviderTestActivity"
-            android:label="@string/title_activity_fileprovidertest"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:label="@string/title_activity_fileprovidertest"/>
 
     </application>
 

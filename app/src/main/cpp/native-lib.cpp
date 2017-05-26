@@ -1,17 +1,10 @@
 #include <jni.h>
+#include <iostream>
 #include <string>
 #include <android/log.h>
-#include <stdlib.h>
-#include <iostream>
-#include <time.h>
 
 using namespace std;
 
-#include <string.h>
-#include <stdio.h>
-
-#include <unistd.h>
-#include <sys/inotify.h>
 
 /**
  * 提示：(*env).NewStringUTF(ctime_1)==env->NewStringUTF(ctime_1)
@@ -183,11 +176,7 @@ Java_com_myself_jnitestdemo_JniTest_getTheCiphertext(
     // TODO
     char miwen_hex[1024];
     char result[1024];
-    //char miwen_hex[] = "8FEEEFE524F8B68DC1FCA2899AC1A6B82E636F6D";
 
-//    AES aes(key);
-//    aes.Cipher(mingwen, miwen_hex);
-//    aes.InvCipher(miwen_hex, result);
     getchar();
 
     LOGI("mingwen: %s", s);

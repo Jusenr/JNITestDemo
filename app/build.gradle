@@ -18,9 +18,8 @@ android {
         }
         //设置NDK的模块名称及平台
         ndk {
-            moduleName "native-lib"
-//            moduleName "JniTest"
-            abiFilters "armeabi"
+            moduleName "native-lib"         //生成的so名字
+            abiFilters "armeabi", "armeabi-v7a", "x86"  //输出指定三种abi体系结构下的so库。
         }
     }
 
@@ -84,25 +83,8 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha9'
     testCompile 'junit:junit:4.12'
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.google.code.gson:gson:2.8.0'
-}
-
-//编译结束后删除unaligned包
-android.applicationVariants.all { variant ->
-    variant.assemble.doLast {
-        variant.outputs.each { output ->
-            println "aligned " + output.outputFile
-            println "unaligned " + output.packageApplication.outputFile
-
-            File file = output.packageApplication.outputFile;
-            if (variant.buildType.zipAlignEnabled && file.getName().contains("unaligned")) {
-                println "deleting " + file.getName()
-                file.delete()
-            }
-        }
-    }
 }

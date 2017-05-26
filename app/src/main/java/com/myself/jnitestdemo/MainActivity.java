@@ -13,7 +13,6 @@ import com.myself.jnitestdemo.base.AppInfoActivity;
 import com.myself.jnitestdemo.base.BaseActivity;
 import com.myself.jnitestdemo.base.FirInfoBean;
 import com.myself.jnitestdemo.base.TotalApplication;
-import com.myself.jnitestdemo.test.FileProviderTestActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -61,24 +60,30 @@ public class MainActivity extends BaseActivity {
     protected void onViewCreatedFinish(Bundle saveInstanceState) {
         getFirAppVersionInfo();
 
-        JniTest jniTest = new JniTest();
-        mSampleText.setText(jniTest.stringFromJNI());
-        mTvText.setText(jniTest.getAcquisitionTime());
-        float add = jniTest.getTwoNumbersAnd(5f, 12f);
-        mTvAdd.setText(String.valueOf(add));
-        int a = jniTest.getA();
-        mTvInt.setText(String.valueOf("a=" + a));
-        mTvNumber.setText(String.valueOf("number= " + jniTest.getStringFromNative()));
-        mTvMsg.setText(jniTest.getMessage().getData().toString());
-        String s = jniTest.getTheCiphertext(express);
-        mTvJiami.setText(String.valueOf("密文：" + s));
+//        JniTest jniTest = new JniTest();
+//        mSampleText.setText(jniTest.stringFromJNI());
+//        mTvText.setText(jniTest.getAcquisitionTime());
+//        float add = jniTest.getTwoNumbersAnd(5f, 12f);
+//        mTvAdd.setText(String.valueOf(add));
+//        int a = jniTest.getA();
+//        mTvInt.setText(String.valueOf("a=" + a));
+//        mTvNumber.setText(String.valueOf("number= " + jniTest.getStringFromNative()));
+//        mTvMsg.setText(jniTest.getMessage().getData().toString());
+//        String s = jniTest.getTheCiphertext(express);
+//        mTvJiami.setText(String.valueOf("密文：" + s));
+
+//        JniUtils jniUtils = new JniUtils();
+//        String string = jniUtils.getCLanguageString();
+//        mSampleText.setText(string);
+
+
     }
 
     @OnClick({R.id.tv_left, R.id.tv_right, R.id.btn_test_fileprovider})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_left:
-                mTvLeft.setText(5 / 3);
+//                mTvLeft.setText(5 / 3);
                 break;
             case R.id.tv_right:
                 Bundle bundle = new Bundle();
@@ -86,7 +91,7 @@ public class MainActivity extends BaseActivity {
                 startActivity(AppInfoActivity.class, bundle);
                 break;
             case R.id.btn_test_fileprovider:
-                startActivity(FileProviderTestActivity.class);
+//                startActivity(FileProviderTestActivity.class);
                 break;
         }
     }

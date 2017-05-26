@@ -20,7 +20,6 @@ public class JniTest {
      */
     static {
         System.loadLibrary("native-lib");
-//        System.loadLibrary("JniTest");
     }
 
     /**
