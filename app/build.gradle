@@ -18,7 +18,7 @@ android {
         }
         //设置NDK的模块名称及平台
         ndk {
-            moduleName "native-lib"         //生成的so名字
+            moduleName "jniutils"         //生成的so名字
             abiFilters "armeabi", "armeabi-v7a", "x86"  //输出指定三种abi体系结构下的so库。
         }
     }
@@ -36,7 +36,8 @@ android {
     sourceSets {
         main {
             //设置本地代码，[]内容去掉则禁止AS的NDK自动编译。
-            jni.srcDirs = ['src/main/cpp']
+            jniLibs.srcDirs = ['libs']
+            jni.srcDirs = ['src/main/cpp', 'src/main/jni']
             java.srcDirs = ['src/main/java']
             assets.srcDirs = ['src/main/assets']
         }

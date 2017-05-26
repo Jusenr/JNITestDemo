@@ -15,6 +15,7 @@ JNIEXPORT jstring JNICALL
 Java_com_myself_jnitestdemo_JniUtils_getCLanguageString(
         JNIEnv *env,
         jobject obj) {
+
     return (*env)->NewStringUTF(env, "This just a test for Android Studio NDK JNI developer!");
 }
 
