@@ -1,6 +1,7 @@
 #include <jni.h>
 #include <iostream>
 #include <string>
+#include <map>
 #include <android/log.h>
 
 using namespace std;
@@ -29,6 +30,57 @@ extern "C" {
 /* 内全局变量begin */
 //static jboolean b_IS_COPY = JNI_TRUE;
 
+//从C语言的map转Java hashmap
+jobject cMap2jHashMap(JNIEnv *env, std::map<char *, char *> c_map) {
+    jclass jmapclass = env->FindClass("java/util/HashMap");
+    jmethodID mid = env->GetMethodID(jmapclass, "<init>", "()V");
+    jmethodID putmethod = env->GetMethodID(jmapclass, "put",
+                                           "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;");
+    jobject j_map = env->NewObject(jmapclass, mid);
+    jclass strClass = env->FindClass("java/lang/String");
+    jmethodID ctorID = env->GetMethodID(strClass, "<init>", "([BLjava/lang/String;)V");
+    jstring encoding = env->NewStringUTF("utf-8");
+    std::map<char *, char *>::iterator it;
+    for (it = c_map.begin(); it != c_map.end(); it++) {
+        char *key = it->first;
+        jbyteArray keybytes = env->NewByteArray(strlen(key));
+        env->SetByteArrayRegion(keybytes, 0, strlen(key), (jbyte *) key);
+        jstring jkey = (jstring) env->NewObject(strClass, ctorID, keybytes, encoding);
+        char *value = it->second;
+        jbyteArray valuebytes = env->NewByteArray(strlen(value));
+        env->SetByteArrayRegion(valuebytes, 0, strlen(value), (jbyte *) value);
+        jstring jvalue = (jstring) env->NewObject(strClass, ctorID, valuebytes, encoding);
+        env->CallVoidMethod(j_map, putmethod, jkey, jvalue);
+    }
+    return j_map;
+}
+
+//java hashmap转c map
+std::map<char *, char *> jMap2cMap(JNIEnv *env, jobject jobj) {
+    std::map<char *, char *> c_map;
+    jclass jmapclass = env->FindClass("java/util/HashMap");
+    jmethodID jkeysetmid = env->GetMethodID(jmapclass, "keySet", "()Ljava/util/Set;");
+    jmethodID jgetmid = env->GetMethodID(jmapclass, "get",
+                                         "(Ljava/lang/Object;)Ljava/lang/Object;");
+    jobject jsetkey = env->CallObjectMethod(jobj, jkeysetmid);
+    jclass jsetclass = env->FindClass("java/util/Set");
+    jmethodID jtoArraymid = env->GetMethodID(jsetclass, "toArray", "()[Ljava/lang/Object;");
+    jobjectArray jobjArray = (jobjectArray) env->CallObjectMethod(jsetkey, jtoArraymid);
+    if (jobjArray == NULL) {
+        LOGD("param is NULL");
+    }
+    jsize arraysize = env->GetArrayLength(jobjArray);
+    int i = 0;
+    for (i = 0; i < arraysize; i++) {
+        jstring jkey = (jstring) env->GetObjectArrayElement(jobjArray, i);
+        jstring jvalue = (jstring) env->CallObjectMethod(jobj, jgetmid, jkey);
+        char *key = (char *) env->GetStringUTFChars(jkey, 0);
+        char *value = (char *) env->GetStringUTFChars(jvalue, 0);
+        c_map[key] = value;
+    }
+    return c_map;
+}
+
 /**
  * Class:     com_myself_jnitestdemo_JniTest
  * Method:    stringFromJNI
@@ -47,6 +99,45 @@ Java_com_myself_jnitestdemo_JniTest_stringFromJNI(
     const char *s = env->GetStringUTFChars(tag, 0);
 
     LOGD("notify message is: %s", s);
+
+    return env->NewStringUTF(hello.c_str());
+}
+
+/**
+ * Class:     com_myself_jnitestdemo_JniTest
+ * Method:    generateSign
+ * Signature: ()O
+ */
+JNIEXPORT jobject JNICALL
+Java_com_myself_jnitestdemo_JniTest_generateSign(
+        JNIEnv *env,
+        jobject instance,
+        jobject j_map,
+        jstring secretkey) {
+
+
+    map<char *, char *> name_score_map;
+    name_score_map["LiMin"] = "88";
+    name_score_map["ZiLinMi"] = "79";
+    name_score_map["BoB"] = "92";
+    name_score_map["Ding"] = "99";
+    name_score_map["MoB"] = "86";
+    name_score_map["Albert"] = "86";
+    for (map<char *, char *>::iterator iter = name_score_map.begin();
+         iter != name_score_map.end(); ++iter) {
+    }
+
+
+    jstring tag = env->NewStringUTF("Native-Lib");
+
+    std::string hello = "JNI:cMap2jHashMap(env, name_score_map)";
+//    std::string hello("JNI:Hello from C++");//另一种写法
+
+    const char *s = env->GetStringUTFChars(tag, 0);
+
+    LOGD("notify message is: %s", s);
+
+//    return cMap2jHashMap(env, name_score_map);
 
     return env->NewStringUTF(hello.c_str());
 }

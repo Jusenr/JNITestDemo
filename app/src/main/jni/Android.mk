@@ -19,16 +19,14 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := jniutils //要生成的so库的名称，但实际为libjniutils.so
+# 要生成的so库的名称，但实际为libjniutils.so
+LOCAL_MODULE := jniutils
 
 #LOCAL_CPPFLAGS := -frtti -std=c++11
 
-#LOCAL_SHARED_LIBRARIES  := im_client_pre
-
-LOCAL_SRC_FILES := JniUtilsTest.c //要使用的文件，刚才编写的JniUtilsTest.c文件
+# 要使用的文件，刚才编写的JniUtilsTest.c文件
+LOCAL_SRC_FILES := JniUtilsTest.c
 
 #LOCAL_LDLIBS := -llog
 
 include $(BUILD_SHARED_LIBRARY)
-
-#include $(LOCAL_PATH)/app/src/main/jni/Android.mk

@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
+import java.util.Map;
+
 /**
  * Description: include JNI file
  * Copyright  : Copyright (c) 2016
@@ -27,6 +29,8 @@ public class JniTest {
      * which is packaged with this application.
      */
     public native String stringFromJNI();//本地方法
+
+    public native Object generateSign(Map<String, String> param, String secretkey);//本地方法
 
     public native String getAcquisitionTime();//本地方法
 

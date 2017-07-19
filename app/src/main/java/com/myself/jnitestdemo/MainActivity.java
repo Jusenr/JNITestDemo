@@ -46,6 +46,8 @@ public class MainActivity extends BaseActivity {
     TextView mTvMsg;
     @BindView(R.id.tv_jiami)
     TextView mTvJiami;
+    @BindView(R.id.tv_sign)
+    TextView mTvSign;
     @BindView(R.id.btn_test_fileprovider)
     Button mBtnTestFileprovider;
 
@@ -60,17 +62,22 @@ public class MainActivity extends BaseActivity {
     protected void onViewCreatedFinish(Bundle saveInstanceState) {
         getFirAppVersionInfo();
 
-//        JniTest jniTest = new JniTest();
-//        mSampleText.setText(jniTest.stringFromJNI());
-//        mTvText.setText(jniTest.getAcquisitionTime());
-//        float add = jniTest.getTwoNumbersAnd(5f, 12f);
-//        mTvAdd.setText(String.valueOf(add));
-//        int a = jniTest.getA();
-//        mTvInt.setText(String.valueOf("a=" + a));
-//        mTvNumber.setText(String.valueOf("number= " + jniTest.getStringFromNative()));
-//        mTvMsg.setText(jniTest.getMessage().getData().toString());
-//        String s = jniTest.getTheCiphertext(express);
-//        mTvJiami.setText(String.valueOf("密文：" + s));
+        JniTest jniTest = new JniTest();
+        mSampleText.setText(jniTest.stringFromJNI());
+        mTvText.setText(jniTest.getAcquisitionTime());
+        float add = jniTest.getTwoNumbersAnd(5f, 12f);
+        mTvAdd.setText(String.valueOf(add));
+        int a = jniTest.getA();
+        mTvInt.setText(String.valueOf("a=" + a));
+        mTvNumber.setText(String.valueOf("number= " + jniTest.getStringFromNative()));
+        mTvMsg.setText(jniTest.getMessage().getData().toString());
+        String s = jniTest.getTheCiphertext(express);
+        mTvJiami.setText(String.valueOf("密文：" + s));
+
+        Object o = jniTest.generateSign(null, null);
+        String o1 = (String) o;
+        mTvSign.setText(o1);
+        Log.e("#####", "onViewCreatedFinish: " + o1.toString());
 
 //        JniUtils jniUtils = new JniUtils();
 //        String string = jniUtils.getCLanguageString();
